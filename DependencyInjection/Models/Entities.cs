@@ -104,10 +104,11 @@ namespace DependencyInjection.Models
         /// <returns>Number of years</returns>
         public int GetWorkExperience(Employee employee)
         {
-            Profile profile = employee.Profiles.Last();
+            Profile firstProfile = employee.Profiles.First();
+            Profile lastProfile = employee.Profiles.Last();
 
-            DateTime fireDate = profile.FireDate ?? DateTime.Now;
-            DateTime employmentDate = profile.EmploymentDate;
+            DateTime fireDate = lastProfile.FireDate ?? DateTime.Now;
+            DateTime employmentDate = firstProfile.EmploymentDate;
 
             if (fireDate.Year <= employmentDate.Year)
                 return 0;

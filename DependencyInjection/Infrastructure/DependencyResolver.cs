@@ -22,6 +22,7 @@ namespace DependencyInjection.Infrastructure
         {
             kernel.Bind<IHumanResourcesDepartment>().To<HumanResourcesDepartment>();
             kernel.Bind<IAccountingDepartment>().To<AccountingDepartment>();
+            kernel.Bind<IEmployeesProvider>().To<EmployeesProvider>();
         }
 
         public object GetService(Type serviceType)
