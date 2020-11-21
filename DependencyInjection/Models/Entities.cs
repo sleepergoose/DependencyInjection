@@ -30,26 +30,153 @@ namespace DependencyInjection.Models
         public Employee Employee { get; set; }
     }
 
-    public class AccountingDepartment
+
+    /// <summary>
+    /// Interface IAccountingDepartment
+    /// </summary>
+    public interface IAccountingDepartment
     {
-        private Employee employee;
-        public AccountingDepartment(Employee _employee)
+        decimal Bonus { get; set; }
+        decimal IncomeTaxRate { get; set; }
+        decimal MilitaryContributionRate { get; set; }
+        decimal SocialInsuranceRate { get; set; }
+
+        decimal GetMonthSalary(Employee employee, IHumanResourcesDepartment hrd);
+    }
+
+    /// <summary>
+    /// Class AccountingDepartment
+    /// </summary>
+    public class AccountingDepartment : IAccountingDepartment
+    {
+        public decimal Bonus { get; set; } = 5m;
+        public decimal IncomeTaxRate { get; set; } = 15m;
+        public decimal MilitaryContributionRate { get; set; } = 1.5m;
+        public decimal SocialInsuranceRate { get; set; } = 2.5m;
+
+        public AccountingDepartment()
         {
-            employee = _employee;
+
+        }
+
+        public AccountingDepartment(decimal _Bonus, decimal _IncomeTaxRate,
+                                    decimal _MilitaryContributionRate, decimal _SocialInsuranceRate)
+        {
+            Bonus = _Bonus;
+            IncomeTaxRate = _IncomeTaxRate;
+            MilitaryContributionRate = _MilitaryContributionRate;
+            SocialInsuranceRate = _SocialInsuranceRate;
+        }
+
+        public decimal GetMonthSalary(Employee employee, IHumanResourcesDepartment hrd)
+        {
+            decimal rate = employee.Profiles.Last().Rate;
+            int harm = hrd.GetHarmPercentage(employee);
+            int experienceBonus = hrd.GetExperienceBonus(employee);
+
+            decimal profit = 1m + (harm + experienceBonus + Bonus) / 100m;
+            decimal taxes = 1m - (IncomeTaxRate + MilitaryContributionRate + SocialInsuranceRate) / 100m;
+            return rate * profit * taxes;
         }
     }
 
-    public class HumanResourcesDepartment
+
+
+    /// <summary>
+    /// Interface IHumanResourcesDepartment
+    /// </summary>
+    public interface IHumanResourcesDepartment
     {
-        private Employee employee;
-        public HumanResourcesDepartment(Employee _employee)
+        int GetExperienceBonus(Employee employee);
+        int GetHarmPercentage(Employee employee);
+        int GetWorkExperience(Employee employee);
+    }
+
+    /// <summary>
+    /// Class HumanResourcesDepartment
+    /// </summary>
+    public class HumanResourcesDepartment : IHumanResourcesDepartment
+    {
+        /// <summary>
+        /// Method calculates total work experiance of the employee (Years)
+        /// </summary>
+        /// <param name="employee">Employee whose work experience needs to be calculated </param>
+        /// <returns>Number of years</returns>
+        public int GetWorkExperience(Employee employee)
         {
-            employee = _employee;
+            Profile profile = employee.Profiles.Last();
+
+            DateTime fireDate = profile.FireDate ?? DateTime.Now;
+            DateTime employmentDate = profile.EmploymentDate;
+
+            if (fireDate.Year <= employmentDate.Year)
+                return 0;
+            else if (fireDate.Month <= employmentDate.Month && fireDate.Day < employmentDate.Day)
+                return fireDate.Year - employmentDate.Year - 1;
+            else
+                return fireDate.Year - employmentDate.Year;
         }
 
-        public TimeSpan? GetWorkExperience()
+        /// <summary>
+        /// Method returns experience bonus percentage depend on numbers of work experience
+        /// </summary>
+        /// <param name="employee">Employee whose experience bonus needs to be calculated</param>
+        /// <returns>Percentage of experience bonus</returns>
+        public int GetExperienceBonus(Employee employee)
         {
-            return employee.Profiles.Last().FireDate - (employee.Profiles.Last().FireDate ?? DateTime.Parse("0"));
+            int exp = this.GetWorkExperience(employee);
+            
+            if (exp < 1)
+                return 0;
+            else if (exp >= 1 && exp < 3)
+                return 7;
+            else if (exp >= 3 && exp < 5)
+                return 10;
+            else if (exp >= 5 && exp < 10)
+                return 15;
+            else if (exp >= 10 && exp < 15)
+                return 20;
+            else if (exp >= 15 && exp < 20)
+                return 25;
+            else if (exp >= 20 && exp < 25)
+                return 30;
+            else if (exp >= 25 && exp < 30)
+                return 35;
+            else if (exp >= 30 && exp < 40)
+                return 40;
+            else
+                return 45;
+        }
+
+        /// <summary>
+        /// Method returns harm percentage bonus depend on employee position
+        /// </summary>
+        /// <param name="employee">Employee whose harm bonus needs to be calculated</param>
+        /// <returns>Percentage of harm bonus</returns>
+        public int GetHarmPercentage(Employee employee)
+        {
+            string position = employee.Profiles.Last().Position;
+
+            switch (position)
+            {
+                case "Mechanic":
+                    return 8;
+                case "Electric":
+                    return 12;
+                case "Driver":
+                    return 10;
+                case "Accountant":
+                case "HR":
+                case "Technic":
+                    return 0;
+                case "Master":
+                    return 8;
+                case "Cleaner":
+                case "Boss":
+                    return 4;
+                default:
+                    return 0;
+            }
         }
     }
 }

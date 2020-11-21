@@ -5,6 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
+using Ninject;
+
+
 namespace DependencyInjection
 {
     public class MvcApplication : System.Web.HttpApplication
@@ -13,6 +16,8 @@ namespace DependencyInjection
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            DependencyResolver.SetResolver(new DependencyInjection.Infrastructure.DependencyResolver(new StandardKernel()));
         }
     }
 }
