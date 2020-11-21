@@ -62,7 +62,7 @@ namespace TestDependencyInjection
             };
         }
 
-        [TestCase(1, 15)]
+        [TestCase(1, 22)]
         [TestCase(2, 8)]
         public void TestGetWorkExperiance(int id, int exp)
         {
@@ -76,7 +76,7 @@ namespace TestDependencyInjection
             Assert.AreEqual(actual, exp);
         }
 
-        [TestCase(1, 25)]
+        [TestCase(1, 30)]
         [TestCase(2, 15)]
         public void TestGetExperienceBonus(int id, int expected)
         {

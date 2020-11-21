@@ -180,4 +180,35 @@ namespace DependencyInjection.Models
             }
         }
     }
+
+
+    public class AccountingDepartmentProgressiveTax : IAccountingDepartment
+    {
+        private decimal _SocialInsuranceRate;
+        public decimal Bonus { get; set; } = 5m;
+        public decimal IncomeTaxRate { get; set; } = 15m;
+        public decimal MilitaryContributionRate { get; set; } = 1.5m;
+        public decimal SocialInsuranceRate { get; set; } = 2.5m;
+
+        public decimal GetMonthSalary(Employee employee, IHumanResourcesDepartment hrd)
+        {
+            decimal rate = employee.Profiles.Last().Rate;
+            int harm = hrd.GetHarmPercentage(employee);
+            int experienceBonus = hrd.GetExperienceBonus(employee);
+
+            decimal profit = 1m + (harm + experienceBonus + Bonus) / 100m;
+            decimal salary = rate * profit;
+
+            if (salary >= 5000)
+            {
+                IncomeTaxRate = 18m;
+            }
+            if (rate > 7000)
+            {
+                SocialInsuranceRate = 3.5m;
+            }
+            decimal taxes = 1m - (IncomeTaxRate + MilitaryContributionRate + SocialInsuranceRate) / 100m;
+            return salary * taxes;
+        }
+    }
 }

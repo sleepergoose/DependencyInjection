@@ -38,7 +38,27 @@ namespace DependencyInjection.Controllers
                 FireDate = e.Profiles.Last().FireDate
             });
 
+
+
             return View(res);
+        }
+
+        public ActionResult Details(int id)
+        {
+            List<Employee> employees = employeesProvider.GetAll().ToList();
+            Employee employee = employees.Find(p => p.Id == id);
+
+            ViewDetails viewDetails = new ViewDetails
+            {
+                Name = employee.FirstName + " " + employee.LastName,
+                Rate = employee.Profiles.Last().Rate,
+                Salary = AccountingDepartment.GetMonthSalary(employee, HRDepartment),
+                WorkExpireance = HRDepartment.GetWorkExperience(employee),
+                ExperienceBonus = HRDepartment.GetExperienceBonus(employee),
+                HarmPercentage = HRDepartment.GetHarmPercentage(employee)
+            };
+
+            return View(viewDetails);
         }
     }
 }

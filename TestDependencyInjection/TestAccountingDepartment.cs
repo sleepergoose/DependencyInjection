@@ -62,7 +62,7 @@ namespace TestDependencyInjection
             };
         }
 
-        [TestCase(1, 8249.04)] // .04
+        [TestCase(1, 8556.84)] // .04
         [TestCase(2, 4811.4)] // .4
         public void TestGetMonthSalary(int id, double expected)
         {

@@ -14,8 +14,9 @@
 
 </head>
 <body>
+
     <div class="container">
-        <table class="table table-stripped">
+        <table class="table table-stripped table-hover">
             <thead class="thead-dark">
                 <tr>
                     <th>Id</th>
@@ -32,7 +33,7 @@
                 {
                     <tr>
                         <td>@item.Id</td>
-                        <td>@item.Name</td>
+                        <td>@Html.ActionLink(@item.Name, "Details", "Home", new { id = item.Id }, new { @class = "nav-link p-0 m-0" } )</td>
                         <td>@item.BirthDate</td>
                         <td>@item.TaxCode</td>
                         <td>@item.CurrentRate</td>
