@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 using System.Web.Mvc;
 using Ninject;
@@ -21,9 +19,8 @@ namespace DependencyInjection.Infrastructure
         private void AddBinding()
         {
             kernel.Bind<IHumanResourcesDepartment>().To<HumanResourcesDepartment>();
-            // kernel.Bind<IAccountingDepartment>().To<AccountingDepartment>();
-            kernel.Bind<IAccountingDepartment>().To<AccountingDepartmentProgressiveTax>()
-                        .WithPropertyValue("Bonus", 45m);
+            kernel.Bind<IAccountingDepartment>().To<AccountingDepartment>();
+            // kernel.Bind<IAccountingDepartment>().To<AccountingDepartmentProgressiveTax>().WithPropertyValue("Bonus", 45m);
             kernel.Bind<IEmployeesProvider>().To<EmployeesProvider>();
         }
 

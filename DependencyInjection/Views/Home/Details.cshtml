@@ -1,28 +1,18 @@
 ﻿@model DependencyInjection.Models.ViewModels.ViewDetails
 
 @{
-    Layout = null;
+    if (Model != null)
+    {
+        <div class="container-fluid w-25 m-3 p-3">
+            <ul class="list-group">
+                <li class="list-group-item bg-dark text-center text-white"><strong>@Model.Name</strong></li>
+                <li class="list-group-item">Rate: @Model.Rate UAH</li>
+                <li class="list-group-item">Salary: @Model.Salary UAH</li>
+                <li class="list-group-item">Expireance: @Model.WorkExpireance years</li>
+                <li class="list-group-item">Bonus: @Model.ExperienceBonus%</li>
+                <li class="list-group-item">Harm: @Model.HarmPercentage%</li>
+                <li class="list-group-item text-center">@Html.ActionLink("Go Back", "Index", "Home")</li>
+            </ul>
+        </div>
+    }
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
-<body>
-    <div class="container-fluid w-25"> 
-        <ul class="list-group">
-            <li class="list-group-item bg-info text-center"><strong>@Model.Name</strong></li>
-            <li class="list-group-item">Rate: @Model.Rate UAH</li>
-            <li class="list-group-item">Salary: @Model.Salary UAH</li>
-            <li class="list-group-item">Expireance: @Model.WorkExpireance years</li>
-            <li class="list-group-item">Bonus: @Model.ExperienceBonus%</li>
-            <li class="list-group-item">Harm: @Model.HarmPercentage%</li>
-            <li class="list-group-item text-center">@Html.ActionLink("Go Back", "Index", "Home")</li>
-        </ul>
-    </div>
-</body>
-</html>

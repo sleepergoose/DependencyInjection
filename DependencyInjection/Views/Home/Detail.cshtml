@@ -1,0 +1,14 @@
+﻿
+@model DependencyInjection.Models.ViewModels.ViewDetails
+
+<div class="container-fluid w-25">
+    <ul class="list-group">
+        <li class="list-group-item bg-info text-center"><strong>@Model.Name</strong></li>
+        <li class="list-group-item">Rate: @Model.Rate UAH</li>
+        <li class="list-group-item">Salary: @Model.Salary UAH</li>
+        <li class="list-group-item">Expireance: @Model.WorkExpireance years</li>
+        <li class="list-group-item">Bonus: @Model.ExperienceBonus%</li>
+        <li class="list-group-item">Harm: @Model.HarmPercentage%</li>
+        <li class="list-group-item text-center">@Html.ActionLink("Go Back", "Index", "Home")</li>
+    </ul>
+</div>

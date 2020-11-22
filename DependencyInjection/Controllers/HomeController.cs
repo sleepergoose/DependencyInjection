@@ -11,6 +11,8 @@ namespace DependencyInjection.Controllers
 {
     public class HomeController : Controller
     {
+        private static List<int> list = new List<int>();
+
         private IHumanResourcesDepartment HRDepartment;
         private IAccountingDepartment AccountingDepartment;
         private IEmployeesProvider employeesProvider;
@@ -43,22 +45,29 @@ namespace DependencyInjection.Controllers
             return View(res);
         }
 
+
         public ActionResult Details(int id)
         {
-            List<Employee> employees = employeesProvider.GetAll().ToList();
-            Employee employee = employees.Find(p => p.Id == id);
+            //if (!list.Contains(id))
+            //{
+            //    list.Add(id);
+                List<Employee> employees = employeesProvider.GetAll().ToList();
+                Employee employee = employees.Find(p => p.Id == id);
 
-            ViewDetails viewDetails = new ViewDetails
-            {
-                Name = employee.FirstName + " " + employee.LastName,
-                Rate = employee.Profiles.Last().Rate,
-                Salary = AccountingDepartment.GetMonthSalary(employee, HRDepartment),
-                WorkExpireance = HRDepartment.GetWorkExperience(employee),
-                ExperienceBonus = HRDepartment.GetExperienceBonus(employee),
-                HarmPercentage = HRDepartment.GetHarmPercentage(employee)
-            };
+                ViewDetails viewDetails = new ViewDetails
+                {
+                    Name = employee.FirstName + " " + employee.LastName,
+                    Rate = employee.Profiles.Last().Rate,
+                    Salary = AccountingDepartment.GetMonthSalary(employee, HRDepartment),
+                    WorkExpireance = HRDepartment.GetWorkExperience(employee),
+                    ExperienceBonus = HRDepartment.GetExperienceBonus(employee),
+                    HarmPercentage = HRDepartment.GetHarmPercentage(employee)
+                };
 
-            return View(viewDetails);
+                return PartialView(viewDetails);
+            //}
+            //else
+            //    return PartialView(null);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace DependencyInjection.Models
 {
@@ -40,6 +39,7 @@ namespace DependencyInjection.Models
         decimal IncomeTaxRate { get; set; }
         decimal MilitaryContributionRate { get; set; }
         decimal SocialInsuranceRate { get; set; }
+        decimal TradeUnionTax { get; set; }
 
         decimal GetMonthSalary(Employee employee, IHumanResourcesDepartment hrd);
     }
@@ -53,19 +53,21 @@ namespace DependencyInjection.Models
         public decimal IncomeTaxRate { get; set; } = 15m;
         public decimal MilitaryContributionRate { get; set; } = 1.5m;
         public decimal SocialInsuranceRate { get; set; } = 2.5m;
-
+        public decimal TradeUnionTax { get; set; } = 1m;
         public AccountingDepartment()
         {
 
         }
 
         public AccountingDepartment(decimal _Bonus, decimal _IncomeTaxRate,
-                                    decimal _MilitaryContributionRate, decimal _SocialInsuranceRate)
+                                    decimal _MilitaryContributionRate, decimal _SocialInsuranceRate,
+                                    decimal _TradeUnionTax)
         {
             Bonus = _Bonus;
             IncomeTaxRate = _IncomeTaxRate;
             MilitaryContributionRate = _MilitaryContributionRate;
             SocialInsuranceRate = _SocialInsuranceRate;
+            TradeUnionTax = _TradeUnionTax;
         }
 
         public decimal GetMonthSalary(Employee employee, IHumanResourcesDepartment hrd)
@@ -75,7 +77,7 @@ namespace DependencyInjection.Models
             int experienceBonus = hrd.GetExperienceBonus(employee);
 
             decimal profit = 1m + (harm + experienceBonus + Bonus) / 100m;
-            decimal taxes = 1m - (IncomeTaxRate + MilitaryContributionRate + SocialInsuranceRate) / 100m;
+            decimal taxes = 1m - (IncomeTaxRate + MilitaryContributionRate + SocialInsuranceRate + TradeUnionTax) / 100m;
             return rate * profit * taxes;
         }
     }
@@ -184,12 +186,12 @@ namespace DependencyInjection.Models
 
     public class AccountingDepartmentProgressiveTax : IAccountingDepartment
     {
-        private decimal _SocialInsuranceRate;
         public decimal Bonus { get; set; } = 5m;
         public decimal IncomeTaxRate { get; set; } = 15m;
         public decimal MilitaryContributionRate { get; set; } = 1.5m;
         public decimal SocialInsuranceRate { get; set; } = 2.5m;
-
+        public decimal TradeUnionTax { get; set; } = 1m;
+        
         public decimal GetMonthSalary(Employee employee, IHumanResourcesDepartment hrd)
         {
             decimal rate = employee.Profiles.Last().Rate;
@@ -207,7 +209,7 @@ namespace DependencyInjection.Models
             {
                 SocialInsuranceRate = 3.5m;
             }
-            decimal taxes = 1m - (IncomeTaxRate + MilitaryContributionRate + SocialInsuranceRate) / 100m;
+            decimal taxes = 1m - (IncomeTaxRate + MilitaryContributionRate + SocialInsuranceRate + TradeUnionTax) / 100m;
             return salary * taxes;
         }
     }
