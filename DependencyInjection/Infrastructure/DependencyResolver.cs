@@ -22,6 +22,7 @@ namespace DependencyInjection.Infrastructure
             kernel.Bind<IAccountingDepartment>().To<AccountingDepartment>();
             // kernel.Bind<IAccountingDepartment>().To<AccountingDepartmentProgressiveTax>().WithPropertyValue("Bonus", 45m);
             kernel.Bind<IEmployeesProvider>().To<EmployeesProvider>();
+            kernel.Bind<IGeneralParam>().To<GeneralParam>().InSingletonScope();
         }
 
         public object GetService(Type serviceType)

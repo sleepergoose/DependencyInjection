@@ -18,7 +18,6 @@ namespace DependencyInjection.Models
             Profiles = new List<Profile>();
         }
     }
-
     public class Profile
     {
         public int Id { get; set; }
@@ -28,6 +27,26 @@ namespace DependencyInjection.Models
         public DateTime? FireDate { get; set; }
         public Employee Employee { get; set; }
     }
+
+    public interface IGeneralParam
+    {
+        int Counter { get; set; }
+    }
+
+    /// <summary>
+    /// This class made to demonstrate the feature of Ninject - Singleton entity.
+    /// </summary>
+    public class GeneralParam : IGeneralParam
+    {
+        public int Counter { get; set; } = 0;
+        public GeneralParam()
+        {
+            this.Counter++;
+        }
+    }
+
+
+
 
 
     /// <summary>
@@ -43,7 +62,6 @@ namespace DependencyInjection.Models
 
         decimal GetMonthSalary(Employee employee, IHumanResourcesDepartment hrd);
     }
-
     /// <summary>
     /// Class AccountingDepartment
     /// </summary>
@@ -84,6 +102,8 @@ namespace DependencyInjection.Models
 
 
 
+
+
     /// <summary>
     /// Interface IHumanResourcesDepartment
     /// </summary>
@@ -93,7 +113,6 @@ namespace DependencyInjection.Models
         int GetHarmPercentage(Employee employee);
         int GetWorkExperience(Employee employee);
     }
-
     /// <summary>
     /// Class HumanResourcesDepartment
     /// </summary>
@@ -181,7 +200,14 @@ namespace DependencyInjection.Models
                     return 0;
             }
         }
+
+        public static int HRCounter { get; set; } = 0;
+        public HumanResourcesDepartment()
+        {
+            HRCounter++;
+        }
     }
+
 
 
     public class AccountingDepartmentProgressiveTax : IAccountingDepartment
